@@ -4,73 +4,94 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="recursos/css/style.css">
+    <link rel="stylesheet" href="recursos/css/bootstrap.min.css">
+    <script src="recursos/js/bootstrap.bundle.js"></script>
+    <link rel="shortcut icon" href="recursos/img/Rick_and_Mortysaaa.png" />
     <title>Document</title>
 </head>
 <body>
-    <?php
-    $capitulo = 10;
-    //curl 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, "https://rickandmortyapi.com/api/episode/".$capitulo);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    $response = curl_exec($ch);
-    curl_close($ch);
+<header class="text-center sticky-top">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="index.php">
+                    <img src="recursos/img/Among-Us.png" alt="Logo Rick_and_Morty" class="img-fluid rick" width="50">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link fs-5" href="index.php">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fs-5" href="episodios.php">Capítulos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fs-5" href="personajes.php?page=1">Personajes</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center flex-wrap justify-content-around mt-2">
+                <?php
+                $page = 1;
+/*                 if (isset($_GET['page'])) {
+                    $page = $_GET['page']; */
+                    //curl
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_URL, "https://rickandmortyapi.com/api/episode?page=" . $page);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+                    $response = curl_exec($ch);
+                    curl_close($ch);
 
-    //json
-    $data = json_decode($response, true);
+                    $data = json_decode($response, true);
+                    $episodios = $data['results'];
+
+                    foreach ($episodios as $episodios) {
+                        $name = $episodios['name'];
+                        $episode = $episodios['episode'];
+                        $air_date = $episodios['air_date'];
+                        $url = $episodios['url'];
+                        $created = $episodios['created'];
+                        echo "<div class='col-12 col-md-6 col-lg-4 col-xl-3 mt-5'>
+                        <div class='card mb-3'>
+                                <div class='card-body'>
+                                    <h5 class='card-title'>$name</h5>
+                                    <p class='card-text'>Episode: $episode</p>
+                                    <p class='card-text'>Air date: $air_date</p>
+                                    <p class='card-text'>Url: $url</p>
+                                    <p class='card-text'>Created: $created</p>
+                                </div>
+                            </div>
+                        </div>";
+                    }
+                //}
+                $pages = $data['info']['pages'];
+                ?>
+            </div>
+        </div>
+    </div>
     
-    //mostrar un solo episodio seleccionado
-    echo "<center>";
-    echo $data['name'];
-    echo "<br>";
-    echo $data['episode'];
-    echo "<br>";
-    echo $data['air_date'];
-    echo "<br>";
-    echo $data['created'];
-    echo "</center>";
-
-    //traer los personajes del episodio
-    $results = $data['characters'];
-    foreach($results as $result){
-        echo "<center>";
-        // echo $result;
-        //traer los personajes del episodio
-        $chPersonaje = curl_init();
-        curl_setopt($chPersonaje, CURLOPT_URL, $result);
-        curl_setopt($chPersonaje, CURLOPT_RETURNTRANSFER, TRUE);
-        $responsePersonaje = curl_exec($chPersonaje);
-        curl_close($chPersonaje);
-        //Json del personaje
-        $dataPersonaje = json_decode($responsePersonaje , true);
-        //Imprimir el personaje
-        echo "<br>";
-        echo $dataPersonaje['name'];
-        echo "<br>";
-        echo $dataPersonaje['id'];
-        echo "<br>";
-        echo $dataPersonaje['status'];
-        echo "<br>";
-        echo "<img src='".$dataPersonaje['image']."'>";
-        echo "</center>";
-    }
-
-    // mostrar todos los episodios
-    // foreach($results as $result){
-    //     echo "<center>";
-    //     echo $result['name'];
-    //     echo "<br>";
-    //     echo $result['id'];
-    //     echo "<br>";
-    //     echo $result['air_date'];
-    //     echo "<br>";
-    //     echo $result['episode'];
-    //     echo "</center>";
-    // }
-
-
-
-
-    ?>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center flex-wrap justify-content-around mt-2">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination d-flex justify-content-center flex-wrap">
+                        <?php
+                        for ($i = 1; $i <= $pages; $i++) {
+                            echo "<li class='page-item'><a class='page-link' href='episode?page=" . $i . "'>" . $i . "</a></li>";
+                        }
+                        ?>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

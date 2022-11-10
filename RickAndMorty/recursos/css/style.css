@@ -2,6 +2,10 @@
     background-color: #303337;
 }
 
+.fondo{
+    background: linear-gradient(90deg, hsla(270, 94%, 25%, 1) 0%, hsla(158, 94%, 49%, 1) 100%);
+}
+
 /* .rick{
     width: 270px;
 } */
