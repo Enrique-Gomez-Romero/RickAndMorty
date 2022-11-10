@@ -12,7 +12,7 @@
   <title>Home</title>
 </head>
 
-<body style="background-image: url(recursos/img/fondito.jpg);">
+<body style="background-image: url(recursos/img/fondito.jpg);  background-size: cover;">
   <header class="text-center sticky-top">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
       <div class="container-fluid">
@@ -28,7 +28,7 @@
               <a class="nav-link fs-5" href="index.php">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link fs-5" href="episodios.php">Capítulos</a>
+              <a class="nav-link fs-5" href="episode.php?page=1">Capítulos</a>
             </li>
             <li class="nav-item">
               <a class="nav-link fs-5" href="personajes.php?page=1">Personajes</a>

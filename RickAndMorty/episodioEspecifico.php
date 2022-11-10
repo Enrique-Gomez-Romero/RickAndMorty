@@ -12,7 +12,7 @@
     <title>Document</title>
 </head>
 
-<body>
+<body style="background-image: url(recursos/img/fondito.jpg); background-size: cover;">
     <header class="text-center sticky-top">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
             <div class="container-fluid">
@@ -28,7 +28,7 @@
                             <a class="nav-link fs-5" href="index.php">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link fs-5" href="episodios.php">Capítulos</a>
+                            <a class="nav-link fs-5" href="episode.php?page=1">Capítulos</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link fs-5" href="personajes.php?page=1">Personajes</a>
@@ -42,7 +42,10 @@
         <div class="row d-flex justify-content-center flex-wrap justify-content-around">
             <div class="col-12 d-flex justify-content-center flex-wrap justify-content-around mt-2">
                 <?php
-                $capitulo = 42;
+                //traer el dato de episodio
+                $id = $_GET['id'];
+
+                $capitulo = $id;
                 //curl 
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, "https://rickandmortyapi.com/api/episode/" . $capitulo);
@@ -54,7 +57,7 @@
                 $data = json_decode($response, true);
 
                 //mostrar un solo episodio seleccionado
-                echo "<center>";
+/*                 echo "<center>";
                 echo $data['name'];
                 echo "<br>";
                 echo $data['episode'];
@@ -62,10 +65,17 @@
                 echo $data['air_date'];
                 echo "<br>";
                 echo $data['created'];
-                echo "</center>"; 
+                echo "</center>";  */
                 
                 //traer los personajes del episodio
                 $results = $data['characters'];
+                echo "<div class='col-12 d-flex justify-content-center flex-wrap justify-content-around'>
+                    <div class='mt-3 text-center text-white'>
+                        <p class='card-text '><h1>Personajes Del Episodio:</h1></p>
+                        <p class='card-text '><h1>" . $data['name'] . "</h1></p>
+                        <p class='card-text '><h1>'" . $data['episode'] . "'</h1></p>
+                    </div>   
+                </div>";
                 //mostrar todos los episodios
                 foreach ($results as $result) {
                     //echo "<center>";
@@ -91,19 +101,6 @@
                         </div>   
                     </div>";
                 }
-                //mostrarme todos los episodios
-                //mostrar todos los episodios
-/*                 foreach($results as $result){
-                    echo "<center>";
-                    echo $result['name'];
-                    echo "<br>";
-                    echo $result['id'];
-                    echo "<br>";
-                    echo $result['air_date'];
-                    echo "<br>";
-                    echo $result['episode'];
-                    echo "</center>";
-                } */
                 ?>
             </div>
         </div>

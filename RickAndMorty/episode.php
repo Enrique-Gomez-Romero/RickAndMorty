@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,12 +7,11 @@
     <link rel="stylesheet" href="recursos/css/style.css">
     <link rel="stylesheet" href="recursos/css/bootstrap.min.css">
     <script src="recursos/js/bootstrap.bundle.js"></script>
-    <link rel="shortcut icon" href="recursos/img/Rick_and_Mortysaaa.png"/>
-    <title>Personajes</title>
+    <link rel="shortcut icon" href="recursos/img/Rick_and_Mortysaaa.png" />
+    <title>Capitulos</title>
 </head>
-
-<body style="background-image: url(recursos/img/fondito.jpg);  background-size: cover;">
-    <header class="text-center sticky-top">
+<body style="background-image: url(recursos/img/fondito.jpg); background-size: cover;">
+<header class="text-center sticky-top">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
             <div class="container-fluid">
                 <a class="navbar-brand" href="index.php">
@@ -38,55 +36,50 @@
             </div>
         </nav>
     </header>
-
-    <div class="text-center text-white">
-        <p class="fs-2">Todos Los Personajes</p>
-    </div>
-
     <div class="container">
         <div class="row">
-            <div class="col-12 d-flex justify-content-center flex-wrap justify-content-around mt-2">
                 <?php
                 $page = 1;
                 if (isset($_GET['page'])) {
-                    $page = $_GET['page'];
+                    $page = $_GET['page']; 
+                    //curl
                     $ch = curl_init();
-                    curl_setopt($ch, CURLOPT_URL, "https://rickandmortyapi.com/api/character/?page=".$page);
+                    curl_setopt($ch, CURLOPT_URL, "https://rickandmortyapi.com/api/episode?page=" . $page);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
                     $response = curl_exec($ch);
                     curl_close($ch);
 
-                    //traer a todos los personajes de la pagina 1
                     $data = json_decode($response, true);
-                    $results = $data['results'];
-                    foreach ($results as $result) {
-                        echo "<div class='col-3 d-flex justify-content-center flex-wrap justify-content-around'>
-                            <div class='card mb-3 text-break border border-5 border-success'>
-                                <img src=" . $result['image'] . " class='card-img-top'>
+                    $episodios = $data['results'];
+
+                    foreach ($episodios as $episodios) {
+                        echo "<div class='col-12 col-md-6 col-lg-4 col-xl-3 mt-5'>
+                        <div class='card mb-3 border border-success border-5'>
+                            <img src='recursos/img/portal.png' alt='Cargando imagen...'>
                                 <div class='card-body text-break'>
-                                    <h5 class='card-title text-break'>'" . $result['name'] . "'</h5>
-                                    <p class='card-text'>Estatus: '" . $result['status'] . "'</p>
-                                    <p class='card-text'>Especie: '" . $result['species'] . "'</p>
-                                    <p class='card-text'>Genero: '" . $result['gender'] . "'</p>
+                                    <h5 class='card-title'>'" . $episodios['name'] . "'</h5>
+                                    <p class='card-text'>Episode:'" . $episodios['episode'] . "'</p>
+                                    <p class='card-text'>Air date:'" . $episodios['air_date'] . "'</p>
+                                    <p class='card-text'>Created: '" . $episodios['created'] . "'</p>
+                                    <p class='card-text'>ID: '" . $episodios['id'] . "'</p>
                                 </div>
-                            </div>   
-                        </div>";
+                                <a href='episodioEspecifico.php?id=" . $episodios['id'] . "' class='rounded rounded-0 btn btn-success'>Ver Personajes Del Capitulo:'" . $episodios['name'] . "'</a>
+                            </div>
+                        </div>"; 
                     }
                 }
-
                 $pages = $data['info']['pages'];
                 ?>
-            </div>
         </div>
     </div>
     <div class="container">
         <div class="row">
             <div class="col-12 d-flex justify-content-center flex-wrap justify-content-around mt-2">
                 <nav aria-label="Page navigation example">
-                    <ul class="pagination d-flex justify-content-center flex-wrap">
+                    <ul class="pagination">
                         <?php
                         for ($i = 1; $i <= $pages; $i++) {
-                            echo "<li class='page-item'><a class='page-link' href='personajes.php?page=" . $i . "'>" . $i . "</a></li>";
+                            echo "<li class='page-item'><a class='page-link' href='episode.php?page=$i'>$i</a></li>";
                         }
                         ?>
                     </ul>
@@ -94,5 +87,14 @@
             </div>
         </div>
     </div>
+    <footer class="text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <p class="text-white">© 2021 Rick and Morty</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
